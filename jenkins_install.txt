@@ -1,0 +1,51 @@
+open VSCode and terminal with Ctrl + ~
+
+
+and change the folder to day 3
+
+execute the following commands in terminal
+
+
+docker run -d --name jenkins-demo -p 8089:8080 -p 50000:50000 `
+  jenkins/jenkins:lts-jdk17
+
+
+docker exec jenkins-demo `
+  cat /var/jenkins_home/secrets/initialAdminPassword
+
+
+
+Step 2:
+
+open Jenkins, login
+
+
+
+
+
+
+pipeline {
+  agent any                      // where to run
+  environment { APP_VERSION = '1.0.0' }   // shared vars
+  stages {
+    stage('Build') {
+      steps { echo "Compiling v${APP_VERSION}..." }
+    }
+    stage('Unit Test') {
+      steps { echo 'Running unit tests...' }
+    }
+    stage('Package') {
+      steps { echo "Packaging app-v${APP_VERSION}.zip" }
+    }
+  }
+  post {                         // after all stages
+    success { echo 'Pipeline succeeded cleanly!' }
+  }
+}
+
+
+
+create a java file
+
+javac Main.java
+java Main
